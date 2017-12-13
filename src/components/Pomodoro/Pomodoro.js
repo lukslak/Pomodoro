@@ -7,7 +7,10 @@ import './pomodoro.css'
 class Pomodoro extends Component {
     render() {
         const { completed, id, handleClick } = this.props
-        const className = classNames('pomodoro', {'pomodoro__completed': completed})
+        const className = classNames(
+            'pomodoros__pomodoro',
+            {'pomodoros__pomodoro--completed': completed}
+        )
         return (
             <div className={className} onClick={() => {handleClick(id)}}>
                 

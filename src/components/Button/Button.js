@@ -5,7 +5,10 @@ import classNames from 'classnames'
 import './button.css'
 
 const Button = ({label, type = 'default'}) => {
-    const className = classNames('button', `button__${type}`)
+    const className = classNames(
+        'buttons__button',
+        `buttons__button--${type}`
+    )
     return (
         <div className={className}>
             {label}

@@ -1,4 +1,10 @@
-.pomodoro {
+.pomodoros {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+.pomodoros__pomodoro {
     margin: 10px;
     width: 100px;
     height: 100px;
@@ -6,6 +12,6 @@
     border-radius: 50%;
 }
 
-.pomodoro__completed {
+.pomodoros__pomodoro--completed {
     background-color: red;
 }

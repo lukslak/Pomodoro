@@ -1,17 +1,23 @@
-.button {
+.buttons {
+    width: 500px;
+    display: flex;
+    justify-content: space-around;
+  }
+  
+.buttons__button {
     padding: 15px;
     font-size: 1.5em;
     color: white;
 }
 
-.button__default {
+.buttons__button--default {
     background-color: dodgerblue;
 }
 
-.button__start {
+.buttons__button--start {
     background-color: #79A620;
 }
 
-.button__stop {
+.buttons__button--stop {
     background-color: firebrick;
 }
