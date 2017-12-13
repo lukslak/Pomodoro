@@ -7,7 +7,14 @@
 .buttons__button {
     padding: 15px;
     font-size: 1.5em;
+    font-weight: bold;
     color: white;
+    transition: transform .1s ease-out;
+    cursor: pointer;
+}
+
+.buttons__button:hover {
+    transform: scale(1.1);
 }
 
 .buttons__button--default {

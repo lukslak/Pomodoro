@@ -11,7 +11,7 @@ const Button = ({label, type = 'default', onClick = () => {}}) => {
     )
     return (
         <div className={className} onClick={() => onClick(type)}>
-            {label}
+            {label.toUpperCase()}
         </div>
     )
 }
