@@ -10,24 +10,36 @@ class App extends Component {
     super(props)
     this.state = {
       pomodoros: [
-        false,
-        false,
-        false,
-        false
+        {
+          status: 'ready'
+        },
+        {
+          status: 'ready'
+        },
+        {
+          status: 'ready'
+        },
+        {
+          status: 'ready'
+        }
       ]
     }
   }
-
-  togglePomodoro = (id) => {
+  
+  updatePomodoro = (id, status) => {
+    console.log(status);
     const updatedPomodoros = this.state.pomodoros.map((pomodoro, index) =>
-      id === index ? !pomodoro : pomodoro
+      id !== index ? pomodoro : {
+        ...pomodoro,
+        status
+      }
     )
     this.setState({pomodoros: updatedPomodoros});
   }
 
   renderPomodoros = () => {
     return this.state.pomodoros.map((pomodoro, index) => 
-      <Pomodoro key={index} id={index} completed={pomodoro} onClick={this.togglePomodoro} />
+      <Pomodoro key={index} id={index} status={pomodoro.status} onClick={this.updatePomodoro} />
     )
   }
 

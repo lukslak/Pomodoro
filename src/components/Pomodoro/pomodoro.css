@@ -8,10 +8,19 @@
     margin: 10px;
     width: 100px;
     height: 100px;
-    background-color: maroon;
     border-radius: 50%;
 }
 
-.pomodoros__pomodoro--completed {
+.pomodoros__pomodoro--ready {
+    width: 80px;
+    height: 80px;
+    border: 10px solid maroon;
+}
+
+.pomodoros__pomodoro--running {
     background-color: red;
+}
+
+.pomodoros__pomodoro--completed {
+    background-color: maroon;
 }

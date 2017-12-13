@@ -4,15 +4,30 @@ import classNames from 'classnames'
 
 import './pomodoro.css'
 
+const statuses = ['ready', 'running', 'completed']
+
 class Pomodoro extends Component {
+    getNextStatus = () => {
+        const { status } = this.props
+        switch (status) {
+            case 'ready':
+                return 'running'
+            case 'running':
+                return 'completed'
+            case 'completed':
+            default:
+                return 'ready'
+        }
+    }
+
     render() {
-        const { completed, id, onClick } = this.props
+        const { status, id, onClick } = this.props
         const className = classNames(
             'pomodoros__pomodoro',
-            {'pomodoros__pomodoro--completed': completed}
+            `pomodoros__pomodoro--${status}`
         )
         return (
-            <div className={className} onClick={() => {onClick(id)}}>
+            <div className={className} onClick={() => {onClick(id, this.getNextStatus())}}>
                 
             </div>
         );
@@ -20,7 +35,7 @@ class Pomodoro extends Component {
 }
 
 Pomodoro.propTypes = {
-    completed: PropTypes.bool.isRequired,
+    status: PropTypes.oneOf(statuses).isRequired,
     id: PropTypes.number.isRequired,
     onClick: PropTypes.func.isRequired,
 };
