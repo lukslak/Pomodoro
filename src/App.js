@@ -27,8 +27,12 @@ class App extends Component {
 
   renderPomodoros = () => {
     return this.state.pomodoros.map((pomodoro, index) => 
-      <Pomodoro key={index} id={index} completed={pomodoro} handleClick={this.togglePomodoro} />
+      <Pomodoro key={index} id={index} completed={pomodoro} onClick={this.togglePomodoro} />
     )
+  }
+
+  handleClick = (type) => {
+    console.log(type + ' clicked');
   }
 
   render() {
@@ -42,8 +46,8 @@ class App extends Component {
           {this.renderPomodoros()}
         </div>
         <div className="buttons">
-          <Button label="start" type="start" />
-          <Button label="stop" type="stop" />
+          <Button label="start" type="start" onClick={this.handleClick} />
+          <Button label="stop" type="stop" onClick={this.handleClick} />
           <Button label="reset" />
         </div>
       </div>

@@ -6,13 +6,13 @@ import './pomodoro.css'
 
 class Pomodoro extends Component {
     render() {
-        const { completed, id, handleClick } = this.props
+        const { completed, id, onClick } = this.props
         const className = classNames(
             'pomodoros__pomodoro',
             {'pomodoros__pomodoro--completed': completed}
         )
         return (
-            <div className={className} onClick={() => {handleClick(id)}}>
+            <div className={className} onClick={() => {onClick(id)}}>
                 
             </div>
         );
@@ -22,7 +22,7 @@ class Pomodoro extends Component {
 Pomodoro.propTypes = {
     completed: PropTypes.bool.isRequired,
     id: PropTypes.number.isRequired,
-    handleClick: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 export default Pomodoro;
