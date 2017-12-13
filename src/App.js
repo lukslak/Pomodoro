@@ -17,6 +17,19 @@ class App extends Component {
     }
   }
 
+  togglePomodoro = (id) => {
+    const updatedPomodoros = this.state.pomodoros.map((pomodoro, index) =>
+      id === index ? !pomodoro : pomodoro
+    )
+    this.setState({pomodoros: updatedPomodoros});
+  }
+
+  renderPomodoros = () => {
+    return this.state.pomodoros.map((pomodoro, index) => 
+      <Pomodoro key={index} id={index} completed={pomodoro} handleClick={this.togglePomodoro} />
+    )
+  }
+
   render() {
     return (
       <div className="App">
@@ -25,7 +38,7 @@ class App extends Component {
           <h1 className="App-title">Hello World</h1>
         </header>
         <div className="pomodoros">
-          {this.state.pomodoros.map((pomodoro, index) => <Pomodoro key={index} completed={pomodoro} />)}
+          {this.renderPomodoros()}
         </div>
       </div>
     );
