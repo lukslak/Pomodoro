@@ -2,10 +2,10 @@
     margin: 10px;
     width: 100px;
     height: 100px;
-    background-color: #330000;
+    background-color: maroon;
     border-radius: 50%;
 }
 
 .pomodoro__completed {
-    background-color: #FF0000;
+    background-color: red;
 }

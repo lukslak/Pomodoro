@@ -30,6 +30,28 @@ class App extends Component {
     )
   }
 
+  renderButton = (label, type = 'default') => {
+    const colors = {
+      default: {
+        backgroundColor: 'dodgerblue',
+        color: 'white'
+      },
+      start: {
+        backgroundColor: '#79A620',
+        color: 'white'
+      },
+      stop: {
+        backgroundColor: 'firebrick',
+        color: 'white'
+      },
+    }
+    return (
+      <div style={{ padding: 15, fontSize: '1.5em', ...colors[type] }}>
+        {label.toUpperCase()}
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="App">
@@ -39,6 +61,11 @@ class App extends Component {
         </header>
         <div className="pomodoros">
           {this.renderPomodoros()}
+        </div>
+        <div className="buttons">
+          {this.renderButton('start', 'start')}
+          {this.renderButton('stop', 'stop')}
+          {this.renderButton('reset')}
         </div>
       </div>
     );
