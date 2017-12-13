@@ -1,0 +1,17 @@
+.button {
+    padding: 15px;
+    font-size: 1.5em;
+    color: white;
+}
+
+.button__default {
+    background-color: dodgerblue;
+}
+
+.button__start {
+    background-color: #79A620;
+}
+
+.button__stop {
+    background-color: firebrick;
+}
