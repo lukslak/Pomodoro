@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Pomodoro from './components/Pomodoro/Pomodoro'
 import Button from './components/Button/Button'
+import { formatTime } from './utils'
+
+const pomodoroSize = 25 * 60
 
 const initialState = {
+  timer: null,
+  counter: pomodoroSize,
   pomodoros: [
     {
       status: 'ready'
@@ -51,6 +55,7 @@ class App extends Component {
 
   resetPomodoros = () => {
     this.setState({ pomodoros: initialState.pomodoros })
+    this.resetTimer()
   }
 
   startPomodoro = () => {
@@ -75,6 +80,7 @@ class App extends Component {
       }
     })
     this.setState({ pomodoros: updatedPomodoros });
+    this.startTimer()
   }
 
   stopPomodoro = () => {
@@ -98,14 +104,59 @@ class App extends Component {
       }
     })
     this.setState({ pomodoros: updatedPomodoros });
+    this.stopTimer()
+  }
+
+  tick = () => {
+    const { counter } = this.state
+    if (counter <= 0) {
+      clearInterval(this.state.timer)
+      return
+    }
+
+    this.setState({
+      counter: counter - 1
+    })
+  }
+
+  setTimer = (counter = pomodoroSize) => {
+    this.setState({ counter })
+  }
+
+  playTimer = () => {
+    this.pauseTimer() // just in case
+    let timer = setInterval(this.tick, 1000)
+    this.setState({ timer })
+  }
+
+  pauseTimer = () => {
+    clearInterval(this.state.timer)
+  }
+
+  startTimer = (counter = pomodoroSize) => {
+    this.setTimer(counter)
+    this.playTimer()
+  }
+
+  stopTimer = () => {
+    this.pauseTimer()
+    this.setTimer(0)
+  }
+
+  resetTimer = (counter) => {
+    this.pauseTimer()
+    this.setTimer(counter)
+  }
+
+  componentWillUnmount() {
+    this.pauseTimer()
   }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Hello World</h1>
+          <span className="App-title">{formatTime(this.state.counter)}</span>
         </header>
         <div className="pomodoros">
           {this.renderPomodoros()}
