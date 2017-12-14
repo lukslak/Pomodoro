@@ -9,6 +9,7 @@ const pomodoroSize = 25 * 60
 const initialState = {
   timer: null,
   counter: pomodoroSize,
+  message: '...',
   pomodoros: [
     {
       status: 'ready'
@@ -30,6 +31,10 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = initialState
+  }
+
+  trace = (message = '...') => {
+    this.setState({ message })
   }
 
   updatePomodoro = (id, status) => {
@@ -54,6 +59,7 @@ class App extends Component {
   }
 
   resetPomodoros = () => {
+    this.trace()
     this.setState({ pomodoros: initialState.pomodoros })
     this.resetTimer()
   }
@@ -62,8 +68,11 @@ class App extends Component {
     const { pomodoros } = this.state
     const isAnyReady = pomodoros.some(pomodoro => pomodoro.status === 'ready')
     const isAnyRunning = pomodoros.some(pomodoro => pomodoro.status === 'running')
-    if (isAnyRunning || !isAnyReady) {
-      console.log('cannot start pomodoro')
+    if (isAnyRunning) {
+      this.trace('Already started...')
+      return
+    } else if (!isAnyReady) {
+      this.trace('Set completed!')
       return
     }
 
@@ -79,15 +88,16 @@ class App extends Component {
         }
       }
     })
+    this.trace('Started!')
     this.setState({ pomodoros: updatedPomodoros });
     this.startTimer()
   }
 
-  stopPomodoro = () => {
+  stopPomodoro = (discard = true) => {
     const { pomodoros } = this.state
     const isAnyRunning = pomodoros.some(pomodoro => pomodoro.status === 'running')
     if (!isAnyRunning) {
-      console.log('cannot stop pomodoro')
+      this.trace('Nothing to stop...')
       return
     }
 
@@ -99,17 +109,24 @@ class App extends Component {
         found = true
         return {
           ...pomodoro,
-          status: 'completed' // or should it be ready?
+          status: discard ? 'ready' : 'completed'
         }
       }
     })
+    this.trace('Stopped!')
     this.setState({ pomodoros: updatedPomodoros });
     this.stopTimer()
+  }
+
+  completePomodoro = () => {
+    this.stopPomodoro(false)
+    this.trace('Completed!')
   }
 
   tick = () => {
     const { counter } = this.state
     if (counter <= 0) {
+      this.completePomodoro()
       clearInterval(this.state.timer)
       return
     }
@@ -157,6 +174,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <span className="App-title">{formatTime(this.state.counter)}</span>
+          <span>{this.state.message}</span>
         </header>
         <div className="pomodoros">
           {this.renderPomodoros()}

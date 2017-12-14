@@ -24,8 +24,18 @@
 
 .pomodoros__pomodoro--running {
     background-color: red;
+    animation: pulse 2s infinite ease-in-out both;
 }
 
 .pomodoros__pomodoro--completed {
     background-color: maroon;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.8);
+    }
 }
