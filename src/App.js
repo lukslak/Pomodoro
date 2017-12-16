@@ -8,20 +8,6 @@ import { formatTime } from './utils'
 const initialState = {
   timer: null,
   message: '...',
-  pomodoros: [
-    {
-      status: 'ready'
-    },
-    {
-      status: 'ready'
-    },
-    {
-      status: 'ready'
-    },
-    {
-      status: 'ready'
-    }
-  ]
 }
 
 class App extends Component {
@@ -37,33 +23,29 @@ class App extends Component {
 
   updatePomodoro = (id, status) => {
     console.log(status);
-    const updatedPomodoros = this.state.pomodoros.map((pomodoro, index) =>
+    const updatedPomodoros = this.props.pomodoros.map((pomodoro, index) =>
       id !== index ? pomodoro : {
         ...pomodoro,
         status
       }
     )
-    this.setState({ pomodoros: updatedPomodoros });
+    this.props.updatePomodoros(updatedPomodoros)
   }
 
   renderPomodoros = () => {
-    return this.state.pomodoros.map((pomodoro, index) =>
+    return this.props.pomodoros.map((pomodoro, index) =>
       <Pomodoro key={index} id={index} status={pomodoro.status} onClick={this.updatePomodoro} />
     )
   }
 
-  handleClick = (type) => {
-    console.log(type + ' clicked');
-  }
-
   resetPomodoros = () => {
     this.trace()
-    this.setState({ pomodoros: initialState.pomodoros })
+    this.props.updatePomodoros()
     this.resetTimer()
   }
 
   startPomodoro = () => {
-    const { pomodoros } = this.state
+    const { pomodoros } = this.props
     const isAnyReady = pomodoros.some(pomodoro => pomodoro.status === 'ready')
     const isAnyRunning = pomodoros.some(pomodoro => pomodoro.status === 'running')
     if (isAnyRunning) {
@@ -87,12 +69,12 @@ class App extends Component {
       }
     })
     this.trace('Started!')
-    this.setState({ pomodoros: updatedPomodoros });
+    this.props.updatePomodoros(updatedPomodoros)
     this.startTimer()
   }
 
   stopPomodoro = (discard = true) => {
-    const { pomodoros } = this.state
+    const { pomodoros } = this.props
     const isAnyRunning = pomodoros.some(pomodoro => pomodoro.status === 'running')
     if (!isAnyRunning) {
       this.trace('Nothing to stop...')
@@ -112,7 +94,7 @@ class App extends Component {
       }
     })
     this.trace('Stopped!')
-    this.setState({ pomodoros: updatedPomodoros });
+    this.props.updatePomodoros(updatedPomodoros)
     this.resetTimer()
   }
 
@@ -186,10 +168,16 @@ const resetAction = {
   type: 'reset'
 }
 
+const updatedPomodorosActionCreator = (pomodoros) => ({
+  type: 'updatePomodoros',
+  pomodoros
+})
+
 const mapDispatchToProps = (dispatch) => ({
   startCount: () => dispatch(startAction),
   decreaseCount: () => dispatch(decreaseAction),
-  resetCount: () => dispatch(resetAction)
+  resetCount: () => dispatch(resetAction),
+  updatePomodoros: (data) => dispatch(updatedPomodorosActionCreator(data))
 })
 
 const connectedApp = connect (
