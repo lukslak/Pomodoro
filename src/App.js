@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import './App.css';
 import Pomodoro from './components/Pomodoro/Pomodoro'
 import Button from './components/Button/Button'
-import { formatTime } from './utils'
+import Timer from './components/Timer/Timer'
 
 const initialState = {
   timer: null,
@@ -135,7 +135,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <span className="App-title">{formatTime(timer.counter)}</span>
+          <Timer counter={timer.counter} />
           <span>{this.state.message}</span>
         </header>
         <div className="pomodoros">
