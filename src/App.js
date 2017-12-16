@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import './App.css';
 import Pomodoro from './components/Pomodoro/Pomodoro'
 import Button from './components/Button/Button'
 import { formatTime } from './utils'
 
-const pomodoroSize = 25 * 60
-
 const initialState = {
   timer: null,
-  counter: pomodoroSize,
   message: '...',
   pomodoros: [
     {
@@ -115,7 +113,7 @@ class App extends Component {
     })
     this.trace('Stopped!')
     this.setState({ pomodoros: updatedPomodoros });
-    this.stopTimer()
+    this.resetTimer()
   }
 
   completePomodoro = () => {
@@ -124,56 +122,38 @@ class App extends Component {
   }
 
   tick = () => {
-    const { counter } = this.state
-    if (counter <= 0) {
+    const { timer } = this.props
+    if (timer.status === 'stopped') {
       this.completePomodoro()
       clearInterval(this.state.timer)
       return
     }
 
-    this.setState({
-      counter: counter - 1
-    })
+    this.props.decreaseCount()
   }
 
-  setTimer = (counter = pomodoroSize) => {
-    this.setState({ counter })
-  }
-
-  playTimer = () => {
-    this.pauseTimer() // just in case
+  startTimer = () => {
+    clearInterval(this.state.timer) // just in case
     let timer = setInterval(this.tick, 1000)
     this.setState({ timer })
+    this.props.startCount()
   }
 
-  pauseTimer = () => {
+  resetTimer = () => {
     clearInterval(this.state.timer)
-  }
-
-  startTimer = (counter = pomodoroSize) => {
-    this.setTimer(counter)
-    this.playTimer()
-  }
-
-  stopTimer = () => {
-    this.pauseTimer()
-    this.setTimer(0)
-  }
-
-  resetTimer = (counter) => {
-    this.pauseTimer()
-    this.setTimer(counter)
+    this.props.resetCount()
   }
 
   componentWillUnmount() {
-    this.pauseTimer()
+    this.resetTimer()
   }
 
   render() {
+    const { timer } = this.props
     return (
       <div className="App">
         <header className="App-header">
-          <span className="App-title">{formatTime(this.state.counter)}</span>
+          <span className="App-title">{formatTime(timer.counter)}</span>
           <span>{this.state.message}</span>
         </header>
         <div className="pomodoros">
@@ -189,4 +169,32 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  pomodoros: state.pomodoros,
+  timer: state.timer
+})
+
+const startAction = {
+  type: 'start'
+}
+
+const decreaseAction = {
+  type: 'decrease'
+}
+
+const resetAction = {
+  type: 'reset'
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  startCount: () => dispatch(startAction),
+  decreaseCount: () => dispatch(decreaseAction),
+  resetCount: () => dispatch(resetAction)
+})
+
+const connectedApp = connect (
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
+
+export default connectedApp;

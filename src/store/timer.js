@@ -6,17 +6,34 @@ const initialState = {
 const timerReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'decrease':
-            if (state.counter <= 0) {
-                return {
-                    ...state,
-                    status: 'stopped'
-                }
-            } else {
-                return {
-                    ...state,
-                    counter: state.counter - 1
-                }
+            if (state.status !== 'active') {
+                alert('something is wrong')
+                return state
             }
+
+            const status = state.counter <= 1 ? 'stopped' : state.status
+            const counter = state.counter < 1 ? state.counter : state.counter - 1
+            return {
+                ...state,
+                status,
+                counter
+            }
+
+        case 'start':
+            return {
+                ...state,
+                status: 'active'
+            }
+
+        case 'stop':
+            return {
+                ...state,
+                status: 'stopped'
+            }
+
+        case 'reset':
+            return initialState
+
         default:
             return state
     }
